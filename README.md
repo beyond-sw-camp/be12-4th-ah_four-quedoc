@@ -78,6 +78,12 @@
 
 <br>
 <h2>시스템 아키텍처 🖥️</h2>
+<h3>
+  <a href="https://github.com/beyond-sw-camp/be12-4rd-ah_four-quedoc/wiki/1.-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98" target="_blank">
+    시스템 아키텍처
+  </a>
+</h3>
 
+<img src="./asset/시스템%20아키텍처.drawio.png" width="800"/>
 <h3>시스템 아키텍처</a></h3>
 
