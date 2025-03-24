@@ -54,7 +54,6 @@
 </div>
 
 
-
 <h3 align="center">협업 툴</h3>
 <div align="center">
   <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/>
@@ -76,6 +75,57 @@
 <p>이 프로젝트의 목표는 사용자들이 손쉽게 병원 예약을 진행하고, 병원 내 결제를 효율적으로 처리할 수 있도록 하는 시스템을 구축하는 것입니다.<br><br> 
   이 시스템은 환자와 병원 간의 원활한 커뮤니케이션과 서비스 제공을 통해 의료 서비스의 질을 향상시키는 데 기여하고자 합니다.</p>
 
+<h1>🖥️ Kubernetes 클러스터 노드 구성</h1>
+🚀 클러스터 구성:
+
+💻 Master Node : 1대
+
+💻 Worker Nodes : 5대
+
+🔹 구성 목적
+➡️ 운영 환경에서의 일관성과 안정성 유지
+➡️ 개발 프로세스의 효율성 향상
+
+<h1>📽️ CI/CD 시나리오</h1>
+
+<h2>📝 개요</h2>
+<p>본 프로젝트는 <strong>Vue 프론트엔드 + Spring Boot 백엔드</strong>로 구성된 웹 애플리케이션입니다.<br>
+GitHub에 호스팅되며, <strong>Jenkins 기반의 CI/CD 파이프라인</strong>을 통해 
+자동으로 <strong>빌드 → 테스트 → Docker 이미지 생성 → Kubernetes 배포</strong>가 이루어집니다.</p>
+
+<h2>🚀 CI/CD 파이프라인</h2>
+
+<h3>✅ 트리거 (GitHub 웹훅)</h3>
+<ul>
+  <li><code>backend</code>, <code>front</code> 브랜치에 <strong>push 또는 PR 발생 시 자동 실행</strong></li>
+  <li>GitHub 웹훅 → Jenkins 서버가 감지하여 CI/CD 프로세스 시작</li>
+</ul>
+
+<h3>🔧 빌드 단계</h3>
+<ul>
+  <li><strong>프론트엔드</strong>: <code>npm install && npm run build</code></li>
+  <li><strong>백엔드</strong>: <code>Gradle build</code>로 <code>.jar</code> 파일 생성</li>
+</ul>
+
+<h3>🐳 Docker 이미지 빌드 & 푸시</h3>
+<ul>
+  <li>Jenkins가 <strong>Docker 이미지 생성 → DockerHub로 푸시</strong></li>
+  <li>Kubernetes 클러스터에서 해당 이미지를 사용해 배포</li>
+</ul>
+
+<h3>⚡ 무중단 배포 (Canary 배포 적용)</h3>
+<ul>
+  <li>새로운 버전 배포 시 <strong>Ingress Controller의 weight 값을 조정</strong>하여 점진적 트래픽 전환</li>
+  <li>이상 발생 시 즉각 롤백 가능</li>
+</ul>
+
+<h2>🎯 Canary 배포 선택 이유</h2>
+<ul>
+  <li>✔ <strong>사용자 피드백 반영</strong> → 문제 발생 시 빠른 대응 가능</li>
+  <li>✔ <strong>영향 범위 최소화</strong> → 점진적 배포로 사용자 경험 저하 방지</li>
+</ul>
+
+
 <br>
 <h2>시스템 아키텍처 🖥️</h2>
 <h3>
@@ -85,4 +135,6 @@
 
 <img src="./asset/시스템%20아키텍처.drawio.png" width="800"/>
 <h3>시스템 아키텍처</a></h3>
+
+
 
