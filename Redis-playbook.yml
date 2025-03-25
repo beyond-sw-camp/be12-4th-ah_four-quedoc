@@ -1,0 +1,79 @@
+- name: Install and Configure Redis Master-Slave with Sentinel
+  hosts: redis
+  become: yes
+  tasks:
+
+    # 1. Redis 설치
+    - name: Install Redis
+      apt:
+        name: redis
+        state: present
+        update_cache: yes
+
+    # 2. Redis 설정 파일 변경
+    - name: Configure Redis
+      lineinfile:
+        path: /etc/redis/redis.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^bind ', line: 'bind 0.0.0.0' }
+        - { regexp: '^port ', line: 'port 6379' }
+        - { regexp: '^protected-mode ', line: 'protected-mode no' }
+        - { regexp: '^appendonly ', line: 'appendonly yes' }
+      notify: Restart Redis
+
+    # 3. 슬레이브 설정 (마스터 제외)
+    - name: Configure Redis Slave
+      lineinfile:
+        path: /etc/redis/redis.conf
+        line: "replicaof {{ master_ip }} 6379"
+      when: "'slave' in group_names"
+      notify: Restart Redis
+
+    # 4. Redis 서비스 재시작 및 활성화
+    - name: Enable Redis Service
+      systemd:
+        name: redis
+        enabled: yes
+        state: restarted
+
+    # 5. Redis Sentinel 설치
+    - name: Install Redis Sentinel
+      apt:
+        name: redis-sentinel
+        state: present
+
+    # 6. Sentinel 설정
+    - name: Configure Redis Sentinel
+      lineinfile:
+        path: /etc/redis/sentinel.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^port ', line: 'port 26379' }
+        - { regexp: '^bind ', line: 'bind 0.0.0.0' }
+        - { regexp: '^protected-mode ', line: 'protected-mode no' }
+        - { regexp: '^sentinel monitor ', line: 'sentinel monitor mymaster {{ master_ip }} 6379 2' }
+        - { regexp: '^sentinel down-after-milliseconds ', line: 'sentinel down-after-milliseconds mymaster 30000' }
+        - { regexp: '^sentinel failover-timeout ', line: 'sentinel failover-timeout mymaster 180000' }
+        - { regexp: '^sentinel parallel-syncs ', line: 'sentinel parallel-syncs mymaster 1' }
+      notify: Restart Redis Sentinel
+
+    # 7. Redis Sentinel 서비스 재시작 및 활성화
+    - name: Enable Redis Sentinel Service
+      systemd:
+        name: redis-sentinel
+        enabled: yes
+        state: restarted
+
+  handlers:
+    - name: Restart Redis
+      systemd:
+        name: redis
+        state: restarted
+
+    - name: Restart Redis Sentinel
+      systemd:
+        name: redis-sentinel
+        state: restarted
