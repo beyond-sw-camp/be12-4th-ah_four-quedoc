@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hospital-deployment
+spec:
+  selector:
+    matchLabels:
+      app: hospital
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: hospital
+    spec:
+      containers:
+        - name: hospital
+          image: cksdudtj/hospital:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: configmap
+            - secretRef:
+                name: secret

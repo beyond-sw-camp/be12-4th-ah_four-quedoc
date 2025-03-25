@@ -113,16 +113,24 @@ GitHub에 호스팅되며, <strong>Jenkins 기반의 CI/CD 파이프라인</stro
   <li>Kubernetes 클러스터에서 해당 이미지를 사용해 배포</li>
 </ul>
 
-<h3>⚡ 무중단 배포 (Canary 배포 적용)</h3>
+<h3>⚡ 무중단 배포</h3>
 <ul>
   <li>새로운 버전 배포 시 <strong>Ingress Controller의 weight 값을 조정</strong>하여 점진적 트래픽 전환</li>
   <li>이상 발생 시 즉각 롤백 가능</li>
 </ul>
 
-<h2>🎯 Canary 배포 선택 이유</h2>
+<h2>🎯 Frontend Canary 배포 선택 이유</h2>
 <ul>
   <li>✔ <strong>사용자 피드백 반영</strong> → 문제 발생 시 빠른 대응 가능</li>
   <li>✔ <strong>영향 범위 최소화</strong> → 점진적 배포로 사용자 경험 저하 방지</li>
+  <li>✔ <strong>초반 weight를 10%로 설정 하고 [10,50,100] 으로 점진적으로 증가</strong> → 점진적 배포로 위기 없이 버전 전환 가능</li>
+</ul>
+
+
+<h2>🎯 Backend Bule & green 배포 선택 이유</h2>
+<ul>
+  <li>✔ <strong>데이터 정확성 중요</strong> → 배포 후 문제가 발생할 경우, 기존 Blue 환경으로 즉시 트래픽 롤백 가능</li>
+  <li>✔ <strong>환자의 민감한 데이터 보호</strong> → 기존 환경에서 데이터 유실 없이 새로운 버전을 테스트한 후 배포 가능</li>
 </ul>
 
 

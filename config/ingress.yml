@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: www.quedoc.kro.kr
+      http:
+        paths:
+          - path: /payment
+            pathType: Prefix
+            backend:
+              service:
+                name: payment-service
+                port:
+                  number: 80
+          - path: /user
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 80
+          - path: /hospital
+            pathType: Prefix
+            backend:
+              service:
+                name: hospital-service
+                port:
+                  number: 80
+          - path: /reservation
+            pathType: Prefix
+            backend:
+              service:
+                name: reservation-service
+                port:
+                  number: 80
+          - path: /board
+            pathType: Prefix
+            backend:
+              service:
+                name: board-service
+                port:
+                  number: 80
+          - path: /search
+            pathType: Prefix
+            backend:
+              service:
+                name: search-service
+                port:
+                  number: 80

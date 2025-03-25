@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-deployment
+spec:
+  selector:
+    matchLabels:
+      app: payment
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+        - name: payment
+          image: cksdudtj/payment:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: configmap
+            - secretRef:
+                name: secret
