@@ -97,14 +97,15 @@ GitHub에 호스팅되며, <strong>Jenkins 기반의 CI/CD 파이프라인</stro
 
 <h3>✅ 트리거 (GitHub 웹훅)</h3>
 <ul>
-  <li><code>backend</code>, <code>front</code> 브랜치에 <strong>push 또는 PR 발생 시 자동 실행</strong></li>
+  <li><code>front</code> 레포지토리에 <strong>push 또는 PR 발생 시 자동 실행</strong></li>
+  <li><code>backend</code> 레포지토리의 각 모듈이름 브랜치에 <strong>push 또는 PR 발생 시 자동 실행</strong></li>
   <li>GitHub 웹훅 → Jenkins 서버가 감지하여 CI/CD 프로세스 시작</li>
 </ul>
 
 <h3>🔧 빌드 단계</h3>
 <ul>
   <li><strong>프론트엔드</strong>: <code>npm install && npm run build</code></li>
-  <li><strong>백엔드</strong>: <code>Gradle build</code>로 <code>.jar</code> 파일 생성</li>
+  <li><strong>백엔드</strong>: 각 모듈에서 <code>Gradle build</code>로 <code>.jar</code> 파일 생성</li>
 </ul>
 
 <h3>🐳 Docker 이미지 빌드 & 푸시</h3>
@@ -115,8 +116,8 @@ GitHub에 호스팅되며, <strong>Jenkins 기반의 CI/CD 파이프라인</stro
 
 <h3>⚡ 무중단 배포</h3>
 <ul>
-  <li>새로운 버전 배포 시 <strong>Ingress Controller의 weight 값을 조정</strong>하여 점진적 트래픽 전환</li>
-  <li>이상 발생 시 즉각 롤백 가능</li>
+  <li><code>Frontend</code>새로운 버전 배포 시 <strong>Ingress Controller의 weight 값을 조정</strong>하여 점진적 트래픽 전환</li>
+  <li><code>Backend</code> 각 모듈의 새로운 버전 배포 시 해당 모듈을 Blue Green 배포 방식으로 배포</li>
 </ul>
 
 <h2>🎯 Frontend Canary 배포 선택 이유</h2>
@@ -142,7 +143,6 @@ GitHub에 호스팅되며, <strong>Jenkins 기반의 CI/CD 파이프라인</stro
 </h3>
 
 <img src="./asset/시스템%20아키텍처.drawio.png" width="800"/>
-<h3>시스템 아키텍처</a></h3>
 
 
 
